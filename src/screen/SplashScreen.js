@@ -1,17 +1,10 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
-  ActivityIndicator,
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Dimensions,
-  Image,
-  ImageBackground,
+  StyleSheet, View, ImageBackground, Image, Text, ActivityIndicator
 } from 'react-native';
-
-const background = require('../assets/background.jpg');
-const logo = require('../assets/logo.png');
+import Utils from '../app/Utils';
+import { Images } from '../assets';
+import { Height, nstyles, Width } from '../styles/styles';
 export default class SplashScreen extends Component {
   constructor(props) {
     super(props);
@@ -30,60 +23,44 @@ export default class SplashScreen extends Component {
     );
   componentDidMount = () => this.closeActivityIndicator();
   componentDidUpdate = () => {
-    this.props.navigation.replace('Login');
+    Utils.replace(this, 'sw_HomePage')
   };
   render() {
     const animating = this.state.animating;
     return (
-      <View>
-        <ImageBackground style={styles.imagebackground} source={background}>
-          <View style={styles.logo}>
-            <Image style={styles.hinhanh} source={logo}></Image>
-            <Text style={{color: 'white', fontSize: 30}}>
-              ỨNG DỤNG CHẤM CÔNG
-            </Text>
-            <Text style={{color: 'red', fontSize: 20}}>
-              @Design by Duong Hoang Phong
-            </Text>
-          </View>
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              height: '60%',
-            }}>
-            <ActivityIndicator
-              animating={animating}
-              color="white"
-              size="large"
-            />
-          </View>
-        </ImageBackground>
-      </View>
+      <ImageBackground source={Images.icBackgroud} style={styles.imgBG}>
+        <View style={styles.viewLogo}>
+          <Image style={nstyles.nIcon120} source={Images.icLogo}></Image>
+          <Text style={styles.txtLogo}>Ứng dụng đa nền tảng</Text>
+        </View>
+        <ActivityIndicator
+          animating={animating}
+          color="white"
+          size="large"
+        />
+        <Text style={styles.txtDesign}>@Design by Duong Hoang Phong</Text>
+      </ImageBackground>
     );
   }
 }
 
-const height = Dimensions.get('screen').height;
-const width = Dimensions.get('screen').width;
-
 const styles = StyleSheet.create({
-  header: {},
-  imagebackground: {
-    height: height,
-    width: width,
+  imgBG: {
+    flex: 1, alignItems: 'center'
   },
-  logo: {
-    height: '40%',
+  txtLogo: {
+    fontSize: 30, color: 'red'
+  },
+  viewLogo: {
     justifyContent: 'center',
     alignItems: 'center',
+    height: Height(40),
   },
-  hinhanh: {
-    height: 100,
-    width: 100,
-    borderRadius: 50,
-  },
-  logochu: {
-    color: 'white',
-  },
+  txtDesign: {
+    color: 'red',
+    fontSize: 15,
+    position: 'absolute',
+    bottom: 15,
+    left: 15
+  }
 });

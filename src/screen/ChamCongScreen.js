@@ -5,6 +5,7 @@ import { reText, sizes } from '../styles/size'
 import { nstyles, Width, Height } from '../styles/styles'
 import CheckBox from '@react-native-community/checkbox'
 import DateTimePicker from '@react-native-community/datetimepicker'
+import Utils from '../app/Utils'
 
 const mangTEMP = [
     { id: '1', ten: 'phong' },
@@ -94,8 +95,8 @@ export default class ChamCongScreen extends Component {
         return (
             <SafeAreaView>
                 <View style={styles.header}>
-                    <TouchableOpacity onPress={() => this.props.navigation.openDrawer()}>
-                        <Image source={require('../assets/icon_left-arrow.png')} style={[nstyles.nIcon40, { marginHorizontal: 10, tintColor: 'white' }]}></Image>
+                    <TouchableOpacity onPress={() => Utils.goback(this)}>
+                        <Image source={require('../assets/Image/icon_left-arrow.png')} style={[nstyles.nIcon40, { marginHorizontal: 10, tintColor: 'white' }]}></Image>
                     </TouchableOpacity>
                     <Text style={styles.headertitle}>Chấm công nhân viên</Text>
                     <TouchableOpacity>

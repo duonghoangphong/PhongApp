@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Text, View, SafeAreaView, StyleSheet, TouchableOpacity, Image } from 'react-native'
+import Utils from '../app/Utils'
 import { colors } from '../styles/color'
 import { reText, sizes } from '../styles/size'
 import { nstyles, Width, Height } from '../styles/styles'
@@ -9,8 +10,8 @@ export default class SettingScreen extends Component {
         return (
             <SafeAreaView>
                 <View style={styles.header}>
-                    <TouchableOpacity onPress={() => this.props.navigation.openDrawer()}>
-                        <Image source={require('../assets/icon_left-arrow.png')} style={[nstyles.nIcon40, { marginHorizontal: 10, tintColor: 'white' }]}></Image>
+                    <TouchableOpacity onPress={() => Utils.toggleDrawer(this)}>
+                        <Image source={require('../assets/Image/icon_left-arrow.png')} style={[nstyles.nIcon40, { marginHorizontal: 10, tintColor: 'white' }]}></Image>
                     </TouchableOpacity>
                     <Text style={styles.headertitle}>Cài đặt</Text>
                     <TouchableOpacity>

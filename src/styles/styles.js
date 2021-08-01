@@ -356,6 +356,14 @@ export const nstyles = StyleSheet.create({
         width: sizes.nImgSize56,
         height: sizes.nImgSize56
     },
+    nIcon80: {
+        width: sizes.nImgSize80,
+        height: sizes.nImgSize80
+    },
+    nIcon120: {
+        width: sizes.nImgSize120,
+        height: sizes.nImgSize120
+    },
     nAva26: {
         width: sizes.nImgSize26,
         height: sizes.nImgSize26,
@@ -400,6 +408,11 @@ export const nstyles = StyleSheet.create({
         width: sizes.nImgSize94,
         height: sizes.nImgSize94,
         borderRadius: sizes.nImgSize94 / 2
+    },
+    nAva187: {
+        width: sizes.nImgSize187,
+        height: sizes.nImgSize187,
+        borderRadius: sizes.nImgSize187 / 2
     },
     nbtnCir14: {
         width: sizes.nImgSize14,

@@ -22,5 +22,6 @@ export const nkey = {
 	RecentSearch: 'RecentSearch',
 	country: 'country',
 	NotificationPushList: 'NotificationPushList',
-	SearchFlight: 'SearchFlight'
+	SearchFlight: 'SearchFlight',
+	ThongTinLapTrinhVien: 'ThongTinLapTrinhVien'
 };

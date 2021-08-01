@@ -1,207 +1,102 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import {
-  View,
-  Text,
-  Dimensions,
-  StyleSheet,
-  Image,
-  ImageBackground,
-  TextInput,
-  TouchableOpacity,
-  Alert,
-  SafeAreaView
+  StyleSheet, View, ImageBackground, Image, Text, ActivityIndicator, TextInput, TouchableOpacity
 } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
-import { showMessage } from 'react-native-flash-message';
-
-import { nGlobalKeys } from '../app/data/globalKey';
-import apiLogin from '../apis/apiLogin';
 import Utils from '../app/Utils';
-
-import { TabView } from 'react-native-tab-view'
-
-const background = require('../assets/background.jpg');
-const logo = require('../assets/logo.png');
-
+import { Images } from '../assets';
+import { colors } from '../styles';
+import { Height, nstyles, Width } from '../styles/styles';
 export default class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showpassword: true,
-      taiKhoan: 'admin',
-      matKhau: '123',
+      animating: true,
+      showpass: true,
+      taikhoan: '123',
+      matkhau: '123'
     };
   }
-
-  _exit = () => {
-    Alert.alert(
-      'Thông báo',
-      'Bạn có muốn thoát ứng dụng ?',
-      [
-        {
-          text: 'Yes',
-          onPress: () => console.log('Yes Pressed'),
-        },
-        {
-          text: 'No',
-          onPress: () => console.log('No Pressed'),
-          style: 'cancel',
-        },
-      ],
-      { cancelable: false },
-      //clicking out side of alert will not cancel
-    );
-  };
-  dangNhap = async () => {
-    let temp = await apiLogin(this.state.taiKhoan, this.state.matKhau);
-    if (temp.data != null) {
-      showMessage({
-        message: 'Đăng nhập thành công',
-        type: 'success',
-      });
-      Utils.nsetStore(nGlobalKeys.loginToken, temp.data.Token);
-      this.props.navigation.navigate('Main');
-    } else {
-      this.refs['taiKhoan'].focus();
-      showMessage({
-        message: 'Tài khoản, mật khẩu không được trống',
-        type: 'warning',
-      });
-    }
-  };
+  _showpass() {
+    this.setState({ showpass: !this.state.showpass })
+  }
+  _login = () => {
+    const { taikhoan, matkhau } = this.state
+    if (taikhoan == '123' && matkhau == '123')
+      Utils.replace(this, 'PhongApp')
+  }
   render() {
-    const { showpassword, taiKhoan, matKhau } = this.state;
+    const { animating, showpass } = this.state
     return (
-      <KeyboardAwareScrollView
-      // keyboardShouldPersistTaps="always"
-      // showsVerticalScrollIndicator={false}
-      // style={{marginTop: 10, paddingHorizontal: 10}}
-      >
-        <ImageBackground source={background} style={styles.imagebackground}>
-          <View style={styles.logo}>
-            <Image style={styles.hinhanh} source={logo}></Image>
-            <Text style={{ color: 'white', fontSize: 30 }}>
-              ỨNG DỤNG CHẤM CÔNG
-            </Text>
-            <Text style={{ color: 'red', fontSize: 20 }}>
-              {/* @Design by Duong Hoang Phong */}
-            </Text>
+      <ImageBackground source={Images.icBackgroud} style={styles.imgBG}>
+        <View style={styles.viewLogo}>
+          <Image style={nstyles.nIcon120} source={Images.icLogo}></Image>
+          <Text style={styles.txtLogo}>Ứng dụng đa nền tảng</Text>
+        </View>
+        <View style={styles.viewDangNhap}>
+          <View style={styles.viewTaiKhoan}>
+            <Image source={Images.icTaiKhoan} style={[nstyles.nIcon30, styles.imgTaiKhoan]}></Image>
+            <TextInput style={styles.inputTK} onChangeText={(value => this.setState({ taikhoan: value }))}></TextInput>
           </View>
-          <View style={styles.thongtin}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginHorizontal: 10,
-              }}>
-              <Image
-                source={require('../assets/icon_user.png')}
-                style={styles.imageicon}></Image>
-              <TextInput
-                onChangeText={(value) => this.setState({ taiKhoan: value })}
-                ref={'taiKhoan'}
-                style={styles.textinput}
-                placeholder="Username"
-                value={taiKhoan}
-                placeholderTextColor="black"></TextInput>
-              <Text></Text>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginHorizontal: 10,
-              }}>
-              <Image
-                source={require('../assets/icon_password.png')}
-                style={styles.imageicon}></Image>
-              <TextInput
-                secureTextEntry={showpassword}
-                style={styles.textinput}
-                placeholder="Password"
-                value={matKhau}
-                onChangeText={(value) => this.setState({ matKhau: value })}
-                placeholderTextColor="black">
-              </TextInput>
-              <TouchableOpacity
-                onPress={() => this.setState({ showpassword: !showpassword })}>
-                <Image
-                  source={
-                    this.state.showpassword
-                      ? require('../assets/icon_hidepassword.png')
-                      : require('../assets/icon_showpassword.png')
-                  }
-                  style={styles.imageicon}></Image>
-              </TouchableOpacity>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-evenly',
-                marginTop: 40,
-              }}>
-              <TouchableOpacity
-                style={styles.nut}
-                onPress={() => this.dangNhap()}>
-                <Text style={styles.chu}>ĐĂNG NHẬP</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.nut} onPress={this._exit}>
-                <Text style={styles.chu}>THOÁT</Text>
-              </TouchableOpacity>
-            </View>
+          <View style={styles.viewTaiKhoan}>
+            <Image source={Images.icMatKhau} style={[nstyles.nIcon30, styles.imgTaiKhoan]}></Image>
+            <TextInput style={styles.inputTK} secureTextEntry={showpass} onChangeText={(value => this.setState({ matkhau: value }))}></TextInput>
+            <TouchableOpacity onPress={() => this._showpass()}>
+              <Image source={showpass ? Images.icHidePass : Images.icShowPass} style={[nstyles.nIcon30, styles.imgTaiKhoan]}></Image>
+            </TouchableOpacity>
           </View>
-        </ImageBackground>
-      </KeyboardAwareScrollView>
+          <View style={styles.viewBTN}>
+            <TouchableOpacity style={styles.btnDangNhap} onPress={() => this._login()}>
+              <Text style={styles.txtDangNhap}>Đăng nhập</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.btnDangNhap}>
+              <Text style={styles.txtDangNhap}>Thoát</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <Text style={styles.txtDesign}>@Design by Duong Hoang Phong</Text>
+      </ImageBackground>
     );
   }
 }
 
-const height = Dimensions.get('screen').height;
-const width = Dimensions.get('screen').width;
-
 const styles = StyleSheet.create({
-  imagebackground: {
-    height: height,
-    width: width,
-    alignItems: 'center',
+  imgBG: {
+    flex: 1, alignItems: 'center'
   },
-  logo: {
-    height: '40%',
+  txtLogo: {
+    fontSize: 30, color: 'red'
+  },
+  viewLogo: {
     justifyContent: 'center',
     alignItems: 'center',
+    height: Height(40),
   },
-  hinhanh: {
-    height: 100,
-    width: 100,
-    borderRadius: 50,
+  txtDesign: {
+    color: 'red',
+    fontSize: 15,
+    position: 'absolute',
+    bottom: 30,
+    left: 30
   },
-  thongtin: {
-    height: '25%',
-    // backgroundColor: '#FFFAF090',
-    backgroundColor: '#FFFFFF90',
-    width: '90%',
-    borderRadius: 20,
+  viewDangNhap: {
+    width: Width(90), height: Height(30), backgroundColor: '#FFFFFF90', borderRadius: 15
   },
-  textinput: {
-    borderBottomWidth: 1,
-    height: 40,
-    width: '80%',
+  viewTaiKhoan: {
+    width: '100%', height: '20%', alignItems: 'center', flexDirection: 'row', marginTop: Width(2)
   },
-  imageicon: {
-    height: 30,
-    width: 30,
-    marginRight: 5
+  imgTaiKhoan: {
+    marginHorizontal: 10
   },
-  nut: {
-    backgroundColor: 'blue',
-    height: 40,
-    width: 110,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
+  inputTK: {
+    width: '72%', borderBottomWidth: 1, height: nstyles.nIcon30.height, fontSize: 20
   },
-  chu: {
-    fontWeight: 'bold',
-    color: 'white',
+  viewBTN: {
+    flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', marginTop: Width(12)
   },
+  btnDangNhap: {
+    width: Width(30), paddingVertical: 10, borderRadius: 5, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.placeholderBlue
+  },
+  txtDangNhap: {
+    fontSize: 18, color: 'white'
+  }
 });
